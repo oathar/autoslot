@@ -15,7 +15,7 @@ export default function Login() {
     setError("");
 
     try {
-      const response = await fetch("http://localhost:5000/users/signin", {
+      const response = await fetch("http://localhost:5858/users/signin", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -27,30 +27,44 @@ export default function Login() {
         }),
       });
 
+      if (!response.ok) {
+        // Try to parse error message from response
+        let errorMessage = "Login failed";
+        try {
+          const errorData = await response.json();
+          errorMessage = errorData.error || errorMessage;
+        } catch {
+          // If response is not JSON, use status text
+          errorMessage = response.statusText || errorMessage;
+        }
+        setError(errorMessage);
+        return;
+      }
+
       const data = await response.json();
 
-      if (response.ok) {
-        // Store user data and token in localStorage
-        const userData = {
-          id: data.user.id,
-          username: data.user.username,
-          email: data.user.email,
-          role: data.user.role,
-          programs: data.user.programs,
-          semester: data.user.semester,
-        };
-        
-        localStorage.setItem("user", JSON.stringify(userData));
-        localStorage.setItem("token", data.token);
-        
-        // Redirect to dashboard
-        navigate("/dashboard");
-      } else {
-        setError(data.error || "Login failed");
-      }
+      // Store user data and token in localStorage
+      const userData = {
+        id: data.user.id,
+        username: data.user.username,
+        email: data.user.email,
+        role: data.user.role,
+        programs: data.user.programs,
+        semester: data.user.semester,
+      };
+      
+      localStorage.setItem("user", JSON.stringify(userData));
+      localStorage.setItem("token", data.token);
+      
+      // Redirect to dashboard
+      navigate("/dashboard");
     } catch (error) {
       console.error("Login error:", error);
-      setError("Network error. Please check your connection and ensure backend is running.");
+      if (error instanceof TypeError && error.message === "Failed to fetch") {
+        setError("Cannot connect to server. Please ensure the backend is running on http://localhost:5858");
+      } else {
+        setError("Network error. Please check your connection and ensure backend is running.");
+      }
     } finally {
       setIsLoading(false);
     }

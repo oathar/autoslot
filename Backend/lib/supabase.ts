@@ -6,8 +6,11 @@ const supabaseUrl = 'https://klnsqwgtrnkllpzkvevj.supabase.co'
 const supabaseKey = process.env.SUPABASE_KEY
 
 if (!supabaseKey) {
-  throw new Error('Missing SUPABASE_KEY environment variable')
+  console.warn('⚠️ Missing SUPABASE_KEY environment variable. Supabase features will not work.');
 }
 
-export const supabase = createClient(supabaseUrl, supabaseKey)
+// Create client only if key exists, otherwise export null
+export const supabase = supabaseKey 
+  ? createClient(supabaseUrl, supabaseKey)
+  : null
 

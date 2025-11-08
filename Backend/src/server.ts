@@ -24,21 +24,34 @@ app.use("/users", userRouter);
 // Test database connection
 (async () => {
   try {
+    console.log("Attempting to connect to database...");
     await prisma.$connect();
-    console.log("✅ Connected to Neon PostgreSQL database");
+    console.log("✅ Connected to database");
   } catch (err) {
-    console.error("❌ Connection error:", err);
-    process.exit(1);
+    console.error("❌ Database connection failed!");
+    if (err instanceof Error) {
+      console.error("Error:", err.message);
+    }
+    console.error("⚠️ Please check your DATABASE_URL in .env file");
+    console.error("⚠️ Server will start but database operations will fail");
   }
 })();
 
 // Graceful shutdown
 process.on("beforeExit", async () => {
-  await prisma.$disconnect();
+  try {
+    await prisma.$disconnect();
+  } catch (err) {
+    console.warn("⚠️ Error disconnecting from database:", err);
+  }
 });
 
 process.on("SIGINT", async () => {
-  await prisma.$disconnect();
+  try {
+    await prisma.$disconnect();
+  } catch (err) {
+    console.warn("⚠️ Error disconnecting from database:", err);
+  }
   process.exit(0);
 });
 
