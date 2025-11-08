@@ -21,7 +21,92 @@ model Teacher {
   role       Role
   created_at DateTime @default(now())
 
+  schedules  Schedule[]
+  requests   Request[]  @relation("RequestFrom")
+  approvals  Request[]  @relation("RequestApprover")
+  attendances Attendance[]
+
   @@map("teachers")
+}
+
+model Schedule {
+  id                 Int      @id @default(autoincrement())
+  teacher_id         Int
+  time               String
+  subject            String
+  room               String
+  class              String
+  students           Int?
+  current_topic      String?
+  total_lectures     Int      @default(40)
+  completed_lectures Int      @default(0)
+  next_topic         String?
+  created_at         DateTime @default(now())
+  updated_at         DateTime @updatedAt
+
+  teacher            Teacher  @relation(fields: [teacher_id], references: [id], onDelete: Cascade)
+  attendances        Attendance[]
+  resources          Resource[]
+
+  @@map("schedules")
+}
+
+model Resource {
+  id          Int      @id @default(autoincrement())
+  schedule_id Int
+  name        String
+  type        String   // pdf, doc, video, link
+  size        String?
+  url         String?
+  created_at  DateTime @default(now())
+
+  schedule    Schedule @relation(fields: [schedule_id], references: [id], onDelete: Cascade)
+
+  @@map("resources")
+}
+
+model Attendance {
+  id          Int      @id @default(autoincrement())
+  schedule_id Int
+  teacher_id  Int
+  marked_at   DateTime @default(now())
+  present     Int
+  absent      Int      @default(0)
+  remarks     String?
+
+  schedule    Schedule @relation(fields: [schedule_id], references: [id], onDelete: Cascade)
+  teacher     Teacher  @relation(fields: [teacher_id], references: [id], onDelete: Cascade)
+
+  @@map("attendances")
+}
+
+model Request {
+  id           Int           @id @default(autoincrement())
+  type         RequestType
+  from_id      Int
+  status       RequestStatus @default(PENDING)
+  details      Json
+  created_at   DateTime      @default(now())
+  updated_at   DateTime      @updatedAt
+  approved_by  Int?
+  approved_at  DateTime?
+
+  from         Teacher       @relation("RequestFrom", fields: [from_id], references: [id], onDelete: Cascade)
+  approver     Teacher?      @relation("RequestApprover", fields: [approved_by], references: [id])
+
+  @@map("requests")
+}
+
+enum RequestType {
+  SWAP_PERIOD
+  LEAVE_REQUEST
+  TAKE_PERIOD
+}
+
+enum RequestStatus {
+  PENDING
+  APPROVED
+  REJECTED
 }
 
 enum Program {

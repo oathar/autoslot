@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { Toaster } from 'react-hot-toast';
 import { Header } from "./components/layout/Header";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
@@ -40,6 +41,7 @@ function AppLayout() {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      <Toaster position="top-right" />
       {showHeader && user && (
         <Header 
           userRole={user.role} 

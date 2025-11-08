@@ -7,7 +7,11 @@ interface TimetableCell {
   isBreak?: boolean;
 }
 
-const Timetable: React.FC = () => {
+interface WeeklyTimeTableProps {
+  onCellClick?: (cellData: TimetableCell & { day: string; time: string }) => void;
+}
+
+const Timetable: React.FC<WeeklyTimeTableProps> = ({ onCellClick }) => {
   const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
   const times = [
     "09:00 - 10:00",
@@ -79,7 +83,8 @@ const Timetable: React.FC = () => {
                 return (
                   <td
                     key={day}
-                    className="bg-[#f0f7fc] rounded-lg px-3 py-3 sm:px-4 sm:py-3 align-top"
+                    className="bg-[#f0f7fc] rounded-lg px-3 py-3 sm:px-4 sm:py-3 align-top cursor-pointer hover:bg-[#dbeafe] transition-colors"
+                    onClick={() => onCellClick?.({ ...cell, day, time })}
                   >
                     <p className="font-semibold text-[#3a3a3a] leading-tight text-xs sm:text-sm">
                       {cell.subject}
