@@ -1,0 +1,62 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/client"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Course {
+  id            Int       @id @default(autoincrement())
+  name          String
+  totalStudents Int
+  semester      Int
+  subjects      Subject[]
+}
+
+model Subject {
+  id              Int              @id @default(autoincrement())
+  name            String
+  hoursPerWeek    Int
+  courseId        Int
+  course          Course           @relation(fields: [courseId], references: [id])
+  teacherSubjects TeacherSubject[]
+}
+
+model Teacher {
+  id              Int              @id @default(autoincrement())
+  name            String
+  maxHoursPerWeek Int
+  teacherSubjects TeacherSubject[]
+}
+
+model TeacherSubject {
+  id        Int     @id @default(autoincrement())
+  teacherId Int
+  subjectId Int
+  teacher   Teacher @relation(fields: [teacherId], references: [id])
+  subject   Subject @relation(fields: [subjectId], references: [id])
+}
+
+model Classroom {
+  id       Int     @id @default(autoincrement())
+  name     String
+  capacity Int
+  features String?
+}
+
+model Timetable {
+  id          Int    @id @default(autoincrement())
+  courseId    Int
+  subjectId   Int
+  teacherId   Int
+  classroomId Int
+  day         String
+  startTime   String
+  endTime     String
+}
