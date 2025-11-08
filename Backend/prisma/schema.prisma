@@ -1,0 +1,47 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Teacher {
+  id         Int      @id @default(autoincrement())
+  username   String   @unique
+  email      String   @unique
+  password   String?  // Optional since you're not using it in signin
+  programs   Program
+  semester   Semester
+  role       Role
+  created_at DateTime @default(now())
+
+  @@map("teachers")
+}
+
+enum Program {
+  B_Ed @map("B.Ed.")
+  M_Ed @map("M.Ed.")
+  FYUP
+  ITEP
+}
+
+enum Semester {
+  FIRST  @map("1st")
+  SECOND @map("2nd")
+  THIRD  @map("3rd")
+  FOURTH @map("4th")
+  FIFTH  @map("5th")
+  SIXTH  @map("6th")
+}
+
+enum Role {
+  SUPERADMIN @map("superadmin")
+  TEACHER    @map("teacher")
+  HOD        @map("HOD")
+}
