@@ -1,0 +1,1 @@
+{"version":3,"file":"timetableService.d.ts","sourceRoot":"","sources":["../../src/services/timetableService.ts"],"names":[],"mappings":"AAIA,cAAM,gBAAgB;IACpB,OAAO,CAAC,aAAa,CAAgB;;IAM/B,iBAAiB,IAAI,OAAO,CAAC,OAAO,CAAC;IA+ErC,sBAAsB;IAsBtB,cAAc;CAUrB;AAED,eAAe,gBAAgB,CAAC"}

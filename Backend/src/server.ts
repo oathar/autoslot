@@ -12,7 +12,12 @@ const app: Application = express();
 const PORT: number = parseInt(process.env.PORT || "5858", 10);
 
 app.use(cors({
-  origin: 'http://localhost:5173', // Your React dev server URL
+  origin: [
+    'http://localhost:5173',
+    'http://localhost:5174',
+    'http://localhost:5175',
+    'http://localhost:5176'
+  ], // Your React dev server URLs
   credentials: true, // Allow cookies
 }));
 

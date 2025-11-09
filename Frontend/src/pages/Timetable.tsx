@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   Card,
   CardContent,
@@ -7,9 +7,40 @@ import {
   CardTitle,
 } from "../components/ui/card";
 import { Calendar } from "lucide-react";
-import WeeklyTimeTable from "../components/layout/WeeklyTimeTable";
+import AutomationTimetable from "../components/layout/AutomationTimetable";
 
 const Timetable = () => {
+  const [courses, setCourses] = useState<any[]>([]);
+  const [selectedCourse, setSelectedCourse] = useState<number>(0);
+  const [selectedSemester, setSelectedSemester] = useState<number>(0);
+
+  // Fetch courses for filters
+  useEffect(() => {
+    const fetchCourses = async () => {
+      try {
+        const response = await fetch("http://localhost:8000/api/timetable/with-details");
+        if (response.ok) {
+          const result = await response.json();
+          setCourses(result.data.courses || []);
+          
+          // Set default selections to first course and its corresponding semester
+          if (result.data.courses && result.data.courses.length > 0) {
+            const firstCourse = result.data.courses[0];
+            setSelectedCourse(firstCourse.id);
+            setSelectedSemester(firstCourse.semester);
+          }
+        }
+      } catch (error) {
+        console.error("Failed to fetch courses:", error);
+      }
+    };
+
+    fetchCourses();
+  }, []);
+
+  // Get unique semesters from courses
+  const semesters = [...new Set(courses.map(course => course.semester))].sort();
+
   return (
     <main className="container mx-auto px-4 sm:px-6 py-8">
       <div className="space-y-8">
@@ -30,11 +61,14 @@ const Timetable = () => {
               <select
                 className="appearance-none w-full border border-gray-300 rounded-lg p-2 pl-4 pr-8
                 bg-blue-100 text-blue-900 focus:outline-none"
+                value={selectedCourse}
+                onChange={(e) => setSelectedCourse(Number(e.target.value))}
               >
-                <option value="">Select Program</option>
-                <option value="option1">Option 1</option>
-                <option value="option2">Option 2</option>
-                <option value="option3">Option 3</option>
+                {courses.map((course) => (
+                  <option key={course.id} value={course.id}>
+                    {course.name}
+                  </option>
+                ))}
               </select>
               <div className="absolute inset-y-0 right-3 flex items-center pointer-events-none">
                 <svg
@@ -58,11 +92,14 @@ const Timetable = () => {
               <select
                 className="appearance-none w-full border border-gray-300 rounded-lg p-2 pl-4 pr-8
                 bg-blue-100 text-blue-900 focus:outline-none"
+                value={selectedSemester}
+                onChange={(e) => setSelectedSemester(Number(e.target.value))}
               >
-                <option value="">Select Semester</option>
-                <option value="option1">Option 1</option>
-                <option value="option2">Option 2</option>
-                <option value="option3">Option 3</option>
+                {semesters.map((semester) => (
+                  <option key={semester} value={semester}>
+                    Semester {semester}
+                  </option>
+                ))}
               </select>
               <div className="absolute inset-y-0 right-3 flex items-center pointer-events-none">
                 <svg
@@ -91,11 +128,14 @@ const Timetable = () => {
               Weekly Schedule
             </CardTitle>
             <CardDescription className="text-gray-600">
-              Your complete weekly teaching timetable
+              AI generated weekly teaching timetable
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <WeeklyTimeTable />
+            <AutomationTimetable 
+              selectedCourse={selectedCourse} 
+              selectedSemester={selectedSemester} 
+            />
           </CardContent>
         </Card>
       </div>
