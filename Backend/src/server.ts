@@ -2,9 +2,11 @@
 import express, { Application } from "express";
 import dotenv from "dotenv";
 import userRouter from "../routers/user.routes";
+import documentRouter from "./routers/document.routes";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import { prisma } from "../lib/prisma";
+import path from "path";
 
 dotenv.config();
 
@@ -25,6 +27,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use("/users", userRouter);
+app.use("/documents", documentRouter);
+
+// Serve uploaded files
+app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
 // Test database connection
 (async () => {

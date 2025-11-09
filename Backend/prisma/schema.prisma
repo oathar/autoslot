@@ -24,6 +24,18 @@ model Teacher {
   @@map("teachers")
 }
 
+model Document {
+  id          Int      @id @default(autoincrement())
+  filename    String
+  path        String
+  uploadedBy  String
+  uploadedAt  DateTime @default(now())
+  extracted   Boolean  @default(false)
+  data        Json?
+
+  @@map("documents")
+}
+
 enum Program {
   B_Ed @map("B.Ed.")
   M_Ed @map("M.Ed.")
@@ -42,6 +54,7 @@ enum Semester {
 
 enum Role {
   SUPERADMIN @map("superadmin")
+  ADMIN      @map("admin")
   TEACHER    @map("teacher")
   HOD        @map("HOD")
 }

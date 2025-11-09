@@ -16,6 +16,8 @@
     "@supabase/supabase-js": "^2.80.0",
     "@types/bcrypt": "^6.0.0",
     "@types/cors": "^2.8.19",
+    "@types/multer": "^2.0.0",
+    "@types/pdf-parse": "^1.1.5",
     "bcrypt": "^6.0.0",
     "bcryptjs": "^3.0.2",
     "cookie-parser": "^1.4.7",
@@ -24,6 +26,8 @@
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.18.1",
+    "multer": "^2.0.2",
+    "pdf-parse": "^2.4.5",
     "pg": "^8.16.3",
     "reflect-metadata": "^0.2.2",
     "typeorm": "^0.3.26"

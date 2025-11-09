@@ -25,6 +25,7 @@ export function Header({ userRole, userName, pendingRequests = 0 }: HeaderProps)
     { name: "Timetable", href: "/timetable", icon: Calendar },
     { name: "Requests", href: "/requests", icon: FileText },
     { name: "Admin", href: "/admin", icon: Settings },
+    ...(userRole === "SUPERADMIN" ? [{ name: "Super Admin", href: "/superadmin", icon: Settings }] : [])
   ];
 
   return (

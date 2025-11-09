@@ -6,6 +6,7 @@ import Dashboard from "./pages/Dashboard";
 import Timetable from "./pages/Timetable";
 import Requests from "./pages/Requests";
 import Admin from "./pages/Admin";
+import SuperAdmin from "./pages/SuperAdmin";
 import NotFound from "./pages/NotFound";
 
 // Component to handle layout with header
@@ -57,6 +58,7 @@ function AppLayout() {
         <Route path="/timetable" element={<Timetable />} />
         <Route path="/requests" element={<Requests />} />
         <Route path="/admin" element={<Admin />} />
+        <Route path="/superadmin" element={<SuperAdmin />} />
 
         {/* Catch-All */}
         <Route path="*" element={<NotFound />} />
