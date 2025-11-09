@@ -8,10 +8,33 @@ import logger from './utils/logger';
 dotenv.config();
 
 const app: Application = express();
-const PORT: number = parseInt(process.env.PORT || '8000', 10);
+
+// Configure CORS for production and development
+const allowedOrigins = [
+  'http://localhost:5173',
+  'http://localhost:5174',
+  'http://localhost:5175',
+  'http://localhost:5176',
+  // Add your production frontend URL here
+  // 'https://your-production-frontend.com'
+];
+
+const corsOptions = {
+  origin: (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) => {
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+    
+    if (allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true
+};
 
 // Middleware
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -44,6 +67,7 @@ app.use('*', (req, res) => {
 });
 
 // Start server
+const PORT: number = parseInt(process.env.PORT || '8000', 10);
 app.listen(PORT, () => {
   logger.info(`Automation backend server is running on port ${PORT}`);
 });
