@@ -274,7 +274,7 @@ export default function Dashboard() {
           <p style="color: #6b7280; font-size: 14px; margin-top: 4px;">Teacher: ${user?.name || 'Dr. Smith'}</p>
         </div>
         <div style="border-top: 2px solid #e5e7eb; padding-top: 20px;">
-          ${todaySchedule.map((item, index) => `
+      ${todaySchedule.map((item, _index) => `    
             <div style="background: #FEF3C7; padding: 20px; border-radius: 12px; margin-bottom: 16px; border: 1px solid #FDE68A;">
               <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 12px;">
                 <div>
@@ -363,7 +363,7 @@ export default function Dashboard() {
     if (!selectedSchedule || !user || attendanceMarked) return;
     
     try {
-      const result = await toast.promise(
+      await toast.promise(
         api.markAttendance({
           schedule_id: 1, // This should come from selectedSchedule.id when available
           teacher_id: user.id || 1,
@@ -550,7 +550,6 @@ export default function Dashboard() {
               border: '2px solid #E5E7EB',
               cursor: 'pointer',
             },
-            onClick: () => window.location.href = '/timetable',
           }
         );
         break;

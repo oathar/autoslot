@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState } from "react";
 import {
   Card,
   CardContent,
@@ -8,7 +8,7 @@ import {
 } from "../components/ui/card";
 import { Button } from "../components/ui/button";
 import { Badge } from "../components/ui/badge";
-import { Calendar, Download, Eye, Edit, X } from "lucide-react";
+import { Calendar, Download, X } from "lucide-react";
 import WeeklyTimeTable from "../components/layout/WeeklyTimeTable";
 import toast, { Toaster } from 'react-hot-toast';
 import jsPDF from "jspdf";

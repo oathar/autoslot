@@ -12,7 +12,7 @@ interface HeaderProps {
   pendingRequests?: number;
 }
 
-export function Header({ userRole, userName, pendingRequests = 0 }: HeaderProps) {
+export function Header({ userRole, userName, pendingRequests: _pendingRequests = 0 }: HeaderProps) {
   const navigate = useNavigate();
   const location = useLocation();
   const [showUserMenu, setShowUserMenu] = useState(false);
