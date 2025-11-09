@@ -557,7 +557,7 @@ export default function Dashboard() {
       case 'requests':
         const pendingCount = requests.filter(r => r.status === "pending").length;
         toast(
-          <div>
+          <div onClick={() => window.location.href = '/requests'} className="cursor-pointer">
             <p className="font-bold text-yellow-700 mb-1">Pending Requests</p>
             <p className="text-sm text-gray-600">{pendingCount} requests awaiting your approval</p>
             <p className="text-xs text-gray-500 mt-1">Click to manage requests</p>
@@ -573,7 +573,6 @@ export default function Dashboard() {
               border: '2px solid #FCD34D',
               cursor: 'pointer',
             },
-            onClick: () => window.location.href = '/requests',
           }
         );
         break;
@@ -633,11 +632,12 @@ export default function Dashboard() {
   }
 
   return (
-    <main className="container mx-auto px-6 py-8">
+    <main className="container mx-auto px-6 py-8 animate-fadeIn">
+      <Toaster position="top-right" />
       <div className="space-y-8">
         {/* Welcome Section */}
-        <div className="space-y-2">
-          <h1 className="text-3xl font-bold text-gray-900">Good morning, {user.name}!</h1>
+        <div className="space-y-2 animate-slideInLeft">
+          <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Good morning, {user.name}!</h1>
           <p className="text-gray-600">
             Here's your schedule for today, {new Date().toLocaleDateString("en-US", { 
               weekday: "long", 
@@ -651,68 +651,68 @@ export default function Dashboard() {
           {/* Stats Cards */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
             <Card 
-              className="bg-white border border-gray-200 shadow-sm rounded-2xl cursor-pointer hover:shadow-md transition-shadow"
+              className="bg-gradient-to-br from-blue-50 to-blue-100 border-2 border-blue-200 shadow-lg rounded-2xl cursor-pointer hover:shadow-2xl transform hover:scale-105 transition-all duration-300 card-hover animate-scaleIn stagger-1"
               onClick={() => handleCardClick('classes')}
             >
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium text-gray-600">Today's Classes</CardTitle>
-                <Calendar className="h-4 w-4 text-gray-400" />
+                <CardTitle className="text-sm font-medium text-blue-700">Today's Classes</CardTitle>
+                <Calendar className="h-5 w-5 text-blue-500" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold text-black">{schedules.length}</div>
-                <p className="text-xs text-gray-500">Scheduled periods</p>
+                <div className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent">{schedules.length}</div>
+                <p className="text-xs text-blue-600">Scheduled periods</p>
               </CardContent>
             </Card>
 
             <Card 
-              className="bg-white border border-gray-200 shadow-sm rounded-2xl cursor-pointer hover:shadow-md transition-shadow"
+              className="bg-gradient-to-br from-yellow-50 to-yellow-100 border-2 border-yellow-200 shadow-lg rounded-2xl cursor-pointer hover:shadow-2xl transform hover:scale-105 transition-all duration-300 card-hover animate-scaleIn stagger-2"
               onClick={() => handleCardClick('requests')}
             >
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium text-gray-600">Pending Requests</CardTitle>
-                <FileText className="h-4 w-4 text-gray-400" />
+                <CardTitle className="text-sm font-medium text-yellow-700">Pending Requests</CardTitle>
+                <FileText className="h-5 w-5 text-yellow-500" />
               </CardHeader>
                 <CardContent>
-                <div className="text-2xl font-bold text-yellow-500">
+                <div className="text-3xl font-bold bg-gradient-to-r from-yellow-600 to-yellow-800 bg-clip-text text-transparent">
                   {requests.filter(r => r.status === "pending").length}
                 </div>
-                <p className="text-xs text-gray-500">Awaiting approval</p>
+                <p className="text-xs text-yellow-600">Awaiting approval</p>
               </CardContent>
             </Card>
 
             <Card 
-              className="bg-white border border-gray-200 shadow-sm rounded-2xl cursor-pointer hover:shadow-md transition-shadow"
+              className="bg-gradient-to-br from-purple-50 to-purple-100 border-2 border-purple-200 shadow-lg rounded-2xl cursor-pointer hover:shadow-2xl transform hover:scale-105 transition-all duration-300 card-hover animate-scaleIn stagger-3"
               onClick={() => handleCardClick('nextClass')}
             >
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium text-gray-600">Next Class</CardTitle>
-                <Clock className="h-4 w-4 text-gray-400" />
+                <CardTitle className="text-sm font-medium text-purple-700">Next Class</CardTitle>
+                <Clock className="h-5 w-5 text-purple-500" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold text-gray-900">09:00</div>
-                <p className="text-xs text-gray-500">Mathematics - Room 101</p>
+                <div className="text-3xl font-bold bg-gradient-to-r from-purple-600 to-purple-800 bg-clip-text text-transparent">09:00</div>
+                <p className="text-xs text-purple-600">Mathematics - Room 101</p>
               </CardContent>
             </Card>
 
             <Card 
-              className="bg-white border border-gray-200 shadow-sm rounded-2xl cursor-pointer hover:shadow-md transition-shadow"
+              className="bg-gradient-to-br from-green-50 to-green-100 border-2 border-green-200 shadow-lg rounded-2xl cursor-pointer hover:shadow-2xl transform hover:scale-105 transition-all duration-300 card-hover animate-scaleIn stagger-4"
               onClick={() => handleCardClick('freePeriods')}
             >
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium text-gray-600">Free Periods</CardTitle>
-                <RefreshCw className="h-4 w-4 text-gray-400" />
+                <CardTitle className="text-sm font-medium text-green-700">Free Periods</CardTitle>
+                <RefreshCw className="h-5 w-5 text-green-500" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold text-green-500">2</div>
-                <p className="text-xs text-gray-500">Available today</p>
+                <div className="text-3xl font-bold bg-gradient-to-r from-green-600 to-green-800 bg-clip-text text-transparent">2</div>
+                <p className="text-xs text-green-600">Available today</p>
               </CardContent>
             </Card>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Today's Schedule */}
-            <div className="lg:col-span-2">
-              <Card className="bg-white border border-gray-200 shadow-sm rounded-2xl">
+            <div className="lg:col-span-2 animate-slideInLeft">
+              <Card className="bg-white/80 backdrop-blur border-2 border-gray-200 shadow-xl rounded-2xl hover:shadow-2xl transition-shadow duration-300">
                 <CardHeader>
                   <CardTitle className="flex items-center justify-between text-gray-900">
                     Today's Schedule
@@ -731,7 +731,7 @@ export default function Dashboard() {
                 <CardContent ref={scheduleRef}>
                   <div className="space-y-4">
                     {todaySchedule.map((item, index) => (
-                      <div key={index} className="bg-orange-50 p-4 rounded-2xl border border-orange-100">
+                      <div key={index} className="bg-gradient-to-r from-orange-50 to-yellow-50 p-5 rounded-2xl border-2 border-orange-200 hover:border-orange-400 transform hover:scale-102 transition-all duration-300 shadow-md hover:shadow-lg animate-slideInLeft" style={{ animationDelay: `${index * 0.1}s` }}>
                         <div className="flex items-center justify-between">
                           <div className="space-y-1">
                             <div className="flex items-center space-x-2">
@@ -763,9 +763,9 @@ export default function Dashboard() {
             </div>
 
             {/* Quick Actions & Recent Requests */}
-            <div className="space-y-6">
+            <div className="space-y-6 animate-slideInRight">
               {/* Quick Actions */}
-              <Card className="bg-white border border-gray-200 shadow-sm rounded-2xl">
+              <Card className="bg-white/80 backdrop-blur border-2 border-gray-200 shadow-xl rounded-2xl hover:shadow-2xl transition-shadow duration-300">
                 <CardHeader>
                   <CardTitle className="text-gray-900">Quick Actions</CardTitle>
                   <CardDescription className="text-gray-600">Common tasks and requests</CardDescription>

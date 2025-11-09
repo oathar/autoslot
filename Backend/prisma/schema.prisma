@@ -25,6 +25,7 @@ model Teacher {
   requests   Request[]  @relation("RequestFrom")
   approvals  Request[]  @relation("RequestApprover")
   attendances Attendance[]
+  notifications Notification[]
 
   @@map("teachers")
 }
@@ -129,4 +130,30 @@ enum Role {
   SUPERADMIN @map("superadmin")
   TEACHER    @map("teacher")
   HOD        @map("HOD")
+}
+
+model Notification {
+  id          Int              @id @default(autoincrement())
+  teacher_id  Int
+  title       String
+  message     String
+  type        NotificationType @default(INFO)
+  read        Boolean          @default(false)
+  link        String?
+  created_at  DateTime         @default(now())
+
+  teacher     Teacher          @relation(fields: [teacher_id], references: [id], onDelete: Cascade)
+
+  @@map("notifications")
+}
+
+enum NotificationType {
+  INFO
+  SUCCESS
+  WARNING
+  ERROR
+  REQUEST
+  APPROVAL
+  REJECTION
+  REMINDER
 }

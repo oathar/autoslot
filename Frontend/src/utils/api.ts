@@ -85,4 +85,47 @@ export const api = {
     });
     return response.json();
   },
+
+  // Notification APIs
+  async getNotifications(teacherId: number) {
+    const response = await fetch(`${API_URL}/notifications/${teacherId}`);
+    return response.json();
+  },
+
+  async getUnreadCount(teacherId: number) {
+    const response = await fetch(`${API_URL}/notifications/${teacherId}/unread-count`);
+    return response.json();
+  },
+
+  async markAsRead(notificationId: number) {
+    const response = await fetch(`${API_URL}/notifications/${notificationId}/read`, {
+      method: 'PUT',
+    });
+    return response.json();
+  },
+
+  async markAllAsRead(teacherId: number) {
+    const response = await fetch(`${API_URL}/notifications/${teacherId}/read-all`, {
+      method: 'PUT',
+    });
+    return response.json();
+  },
+
+  async createNotification(data: { teacher_id: number; title: string; message: string; type?: string; link?: string }) {
+    const response = await fetch(`${API_URL}/notifications`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+    return response.json();
+  },
+
+  async deleteNotification(notificationId: number) {
+    const response = await fetch(`${API_URL}/notifications/${notificationId}`, {
+      method: 'DELETE',
+    });
+    return response.json();
+  },
 };

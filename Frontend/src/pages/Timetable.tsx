@@ -26,12 +26,13 @@ const Timetable = () => {
 
   const handleExportPDF = async () => {
     setIsExporting(true);
-    const loadingToast = toast.loading('Generating timetable PDF...', {
-      position: 'top-right',
-      style: { background: '#3B82F6', color: '#fff', padding: '16px', borderRadius: '12px' },
-    });
-
+    
     try {
+      const loadingToast = toast.loading('Generating timetable PDF...', {
+        position: 'top-right',
+        style: { background: '#3B82F6', color: '#fff', padding: '16px', borderRadius: '12px' },
+      });
+
       // Small delay to show loading state
       await new Promise(resolve => setTimeout(resolve, 500));
       
@@ -47,6 +48,34 @@ const Timetable = () => {
         backgroundColor: '#ffffff',
         logging: false,
         useCORS: true,
+        allowTaint: true,
+        ignoreElements: (element) => {
+          // Skip elements that might have oklch colors
+          return element.classList?.contains('lucide') || false;
+        },
+        onclone: (clonedDoc) => {
+          const clonedElement = clonedDoc.querySelector('.timetable-content');
+          if (clonedElement) {
+            (clonedElement as HTMLElement).style.display = 'block';
+            // Convert all oklch colors to rgb
+            const allElements = clonedElement.querySelectorAll('*');
+            allElements.forEach((el) => {
+              const htmlEl = el as HTMLElement;
+              const computedStyle = window.getComputedStyle(el);
+              
+              // Force standard colors
+              if (computedStyle.backgroundColor && computedStyle.backgroundColor.includes('oklch')) {
+                htmlEl.style.backgroundColor = '#ffffff';
+              }
+              if (computedStyle.color && computedStyle.color.includes('oklch')) {
+                htmlEl.style.color = '#000000';
+              }
+              if (computedStyle.borderColor && computedStyle.borderColor.includes('oklch')) {
+                htmlEl.style.borderColor = '#e5e7eb';
+              }
+            });
+          }
+        },
       });
 
       const imgData = canvas.toDataURL('image/png');
@@ -79,8 +108,8 @@ const Timetable = () => {
       });
     } catch (error) {
       console.error('Error exporting PDF:', error);
-      toast.error('Failed to export PDF. Please try again.', { 
-        id: loadingToast,
+      toast.error(`Failed to export PDF: ${error instanceof Error ? error.message : 'Unknown error'}`, {
+        duration: 4000,
         style: { background: '#EF4444', color: '#fff', padding: '16px', borderRadius: '12px' },
       });
     } finally {

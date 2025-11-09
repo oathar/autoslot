@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import userRouter from "../routers/user.routes";
 import scheduleRouter from "../routers/schedule.routes";
 import requestRouter from "../routers/request.routes";
+import notificationRouter from "../routers/notification.routes";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import { prisma } from "../lib/prisma";
@@ -24,6 +25,7 @@ app.use(cookieParser());
 app.use("/users", userRouter);
 app.use("/schedules", scheduleRouter);
 app.use("/requests", requestRouter);
+app.use("/notifications", notificationRouter);
 
 // Test database connection
 (async () => {
